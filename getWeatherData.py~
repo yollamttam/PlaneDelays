@@ -1,0 +1,21 @@
+import os
+
+sqlsettings={'usr':'pymorph', 'pwd':'pymorph', 'dba':'matts_stuff', 'outfile':'bikeinfo.txt'} 
+
+os.system('mysql -u {usr} -p{pwd} {dba} -e "select * from (select StartTerminal as term, startdate as date, -1 as count from bikeshare Union All select EndTerminal as term, enddate as date, 1 as count from bikeshare ) as a order by a.date;" > {outfile}'.format(**sqlsettings))
+
+infile = open(sqlsettings['outfile'])
+infile.readline() # skip the header
+
+bikes = {}
+for line in infile.readlines():
+    term, date, count = line.split('\t')
+    if term not in bikes.keys():
+        bikes[term]=30
+    bikes[term] += int(count)
+    print "terminal %s has %d bikes" %(term,bikes[term])
+    if bikes[term] <=0:
+        print term, date
+        break
+    
+infile.close()
