@@ -17,9 +17,10 @@ nfiles = len(filelist)
 for i in range(nfiles):
     filename = filelist[i]
     sqlsettings={'usr':'matt', 'dba':'matts_stuff', 'outfile':filename}
-    os.system("""mysql -u {usr} {dba} -e 'load data infile "{outfile}" into table
-flights fields terminated by "," enclosed by "\"" ignore 1 lines (flightyear, flightmonth, dayofmonth, dayofweek, flightdate, carrierID, flightnumber, originairport, origincityMID, origin, origincitystate, originstate, destairport, destcityMID, destination, destcitystate, deststate, deptime, depdelay, depdelay15bool, arrtime,arrdelay, arrdelay15bool, cancelledbool, cancelcode, distance, carrierdelay, weatherdelay, nasdelay, securitydelay, lateaircraftdelay);' """.format(**sqlsettings))
-    
+    cmd="""mysql -u {usr} {dba} -e "load data infile '{outfile}' into table
+flights fields terminated by ',' enclosed by '\\"' ignore 1 lines (flightyear, flightmonth, dayofmonth, dayofweek, flightdate, carrierID, flightnumber, originairport, origincityMID, origin, origincitystate, originstate, destairport, destcityMID, destination, destcitystate, deststate, deptime, depdelay, depdelay15bool, arrtime,arrdelay, arrdelay15bool, cancelledbool, cancelcode, distance, carrierdelay, weatherdelay, nasdelay, securitydelay, lateaircraftdelay);" """.format(**sqlsettings)
+    print cmd
+    os.system(cmd)
     if (continueBool != 999):
         print "enter anything to continue, but:"
         continueBool = input('Enter 999 to continue to process all files...')
