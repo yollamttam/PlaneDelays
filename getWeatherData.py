@@ -7,6 +7,12 @@ sqlsettings={'usr':'matt', 'dba':'matts_stuff', 'outfile':'airportWeatherStation
 # Take data from your stations database and export it to a file
 os.system("""mysql -u {usr} {dba} -e "select USAF, WBAN, ICAO, STATION from stations where ICAO != '' and STATION like '% AIR%';" > {outfile}""".format(**sqlsettings))
 
+infile = open(whatever.svg)
+svg = infile.read()
+outfile = open(output.svg,'w')
+outfile.write(svg.format(**whateverdict))
+outfile.close()
+
 # drop weather table if it exists already
 print "dropping weather table if it exists already..."
 os.system("""mysql -u {usr} {dba} -e "drop table if exists weather;" """.format(**sqlsettings))
